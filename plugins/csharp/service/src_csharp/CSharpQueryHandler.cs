@@ -20,8 +20,6 @@ using CSharpParser.model;
 public class CSharpQueryHandler : CsharpService.IAsync
 {        
     private CsharpDbContext dbContext;
-
-    private QueryHelper queryHelper = new QueryHelper();
     public CSharpQueryHandler(string connenctionString)
     {
         // Converting the connectionstring into Entity Framework style connection string
@@ -264,7 +262,7 @@ public class CSharpQueryHandler : CsharpService.IAsync
                 minNode = node;            
         }
 
-        return await Task.FromResult(queryHelper.createAstNodeInfo(minNode));
+        return await Task.FromResult(QueryUtility.CreateAstNodeInfo(minNode));
     }
 
     public async Task<Dictionary<string, string>> getProperties(string astNodeIds, 
@@ -368,7 +366,7 @@ public class CSharpQueryHandler : CsharpService.IAsync
     public async Task<FileRange> getFileRange(string astNodeId, 
         CancellationToken cancellationToken = default(CancellationToken))
     {        
-        return await Task.FromResult(queryHelper.getFileRange(queryCsharpAstNode(astNodeId)));
+        return await Task.FromResult(QueryUtility.GetFileRange(queryCsharpAstNode(astNodeId)));
     }
 
     public async Task<Dictionary<string, int>> getReferenceTypes(string astNodeId, 
@@ -525,56 +523,56 @@ public class CSharpQueryHandler : CsharpService.IAsync
         switch ((ReferenceType)referenceId)
         {
             case ReferenceType.USAGE:
-                ret = queryHelper.createAstNodeInfoList(queryInvocations(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryInvocations(node));
                 break;
             case ReferenceType.DEFINITION:
             case ReferenceType.DECLARATION:
-                ret = queryHelper.createAstNodeInfoList(queryDeclarators(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryDeclarators(node));
                 break;
             case ReferenceType.EVALUATION:
-                ret = queryHelper.createAstNodeInfoList(queryEvals(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryEvals(node));
                 break;
             case ReferenceType.PARAMETER:
-                ret = queryHelper.createAstNodeInfoList(queryParams(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryParams(node));
                 break;
             case ReferenceType.LOCAL_VAR:
-                ret = queryHelper.createAstNodeInfoList(queryLocals(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryLocals(node));
                 break;
             case ReferenceType.DATA_MEMBER:
-                ret = queryHelper.createAstNodeInfoList(queryProperties(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryProperties(node));
                 break;
             case ReferenceType.THIS_CALLS:
-                ret = queryHelper.createAstNodeInfoList(queryCalls(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryCalls(node));
                 break;
             case ReferenceType.CALLEE:
-                ret = queryHelper.createAstNodeInfoList(queryCallees(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryCallees(node));
                 break;
             case ReferenceType.CALLER:
-                ret = queryHelper.createAstNodeInfoList(queryCallers(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryCallers(node));
                 break;
             case ReferenceType.ENUM_CONSTANTS:
-                ret = queryHelper.createAstNodeInfoList(queryEnumConsts(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryEnumConsts(node));
                 break;
             case ReferenceType.METHOD:
-                ret = queryHelper.createAstNodeInfoList(queryMethods(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryMethods(node));
                 break;
             case ReferenceType.CONSTRUCTOR:
-                ret = queryHelper.createAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Constructor));
+                ret = QueryUtility.CreateAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Constructor));
                 break;
             case ReferenceType.DESTRUCTOR:
-                ret = queryHelper.createAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Destuctor));
+                ret = QueryUtility.CreateAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Destuctor));
                 break;
             case ReferenceType.OPERATOR:
-                ret = queryHelper.createAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Operator));
+                ret = QueryUtility.CreateAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Operator));
                 break;
             case ReferenceType.ACCESSOR:
-                ret = queryHelper.createAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Accessor));
+                ret = QueryUtility.CreateAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Accessor));
                 break;
             case ReferenceType.DELEGATE:
-                ret = queryHelper.createAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Delegate));
+                ret = QueryUtility.CreateAstNodeInfoList(queryMethodType(node, MethodTypeEnum.Delegate));
                 break;
             case ReferenceType.EVENT:
-                ret = queryHelper.createAstNodeInfoList(queryEvents(node));
+                ret = QueryUtility.CreateAstNodeInfoList(queryEvents(node));
                 break;
             default:
                 System.Console.WriteLine($"[CSharpService] {(ReferenceType)referenceId}"+ 

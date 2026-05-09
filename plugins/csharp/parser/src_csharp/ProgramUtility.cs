@@ -12,7 +12,7 @@ using CSharpParser.model;
 
 namespace CSharpParser
 {
-    class ProgramHelper
+    static class ProgramUtility
     {
         public static IEnumerable<string> GetSourceFilesFromDir(string root, string extension)
         {
@@ -85,7 +85,7 @@ namespace CSharpParser
             return allFiles;
         }
 
-        public static string transformConnectionString(string _connectionString)
+        public static string TransformConnectionString(string _connectionString)
         {
             _connectionString = _connectionString.Substring(_connectionString.IndexOf(':')+1);
             _connectionString = _connectionString.Replace("user", "username");

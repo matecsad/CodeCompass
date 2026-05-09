@@ -82,7 +82,7 @@ namespace CSharpParser
             }*/
 
             //Converting the connectionstring into entiy framwork style connectionstring
-            string csharpConnectionString = ProgramHelper.transformConnectionString(_connectionString);
+            string csharpConnectionString = ProgramUtility.TransformConnectionString(_connectionString);
 
             var options = new DbContextOptionsBuilder<CsharpDbContext>()
                             .UseNpgsql(csharpConnectionString)
@@ -95,17 +95,17 @@ namespace CSharpParser
             foreach (var p in _rootDir)
             {
                 Console.WriteLine(p);
-                allFiles.AddRange(ProgramHelper.GetSourceFilesFromDir(p, ".cs"));
+                allFiles.AddRange(ProgramUtility.GetSourceFilesFromDir(p, ".cs"));
             }
 
             foreach (var f in allFiles)
             {
                 WriteLine(f);
             }
-            IEnumerable<string> assemblies = ProgramHelper.GetSourceFilesFromDir(_buildDir, ".dll");
+            IEnumerable<string> assemblies = ProgramUtility.GetSourceFilesFromDir(_buildDir, ".dll");
             IEnumerable<string> assemblies_base = assemblies;
             if (args.Length == 5)
-                assemblies_base = ProgramHelper.GetSourceFilesFromDir(_buildDirBase, ".dll");
+                assemblies_base = ProgramUtility.GetSourceFilesFromDir(_buildDirBase, ".dll");
 
             List<SyntaxTree> trees = new List<SyntaxTree>();
             foreach (string file in allFiles)

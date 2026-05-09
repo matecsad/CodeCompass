@@ -14,7 +14,6 @@ namespace CSharpParser
         private readonly CsharpDbContext DbContext;
         private readonly SemanticModel Model;
         private readonly SyntaxTree Tree;
-        private readonly AstVisitorHelper Helper;
 
         public bool FullyParsed = true;
 
@@ -22,8 +21,7 @@ namespace CSharpParser
         {
             this.DbContext = context;
             this.Model = model;
-            this.Tree = tree;  
-            this.Helper = new AstVisitorHelper();          
+            this.Tree = tree;          
         }
 
         private CsharpAstNode AstNode(SyntaxNode node, AstSymbolTypeEnum type, AstTypeEnum astType)
@@ -47,7 +45,7 @@ namespace CSharpParser
                 Accessibility = acc
             };
             astNode.SetLocation(Tree.GetLineSpan(node.Span));
-            astNode.Id = Helper.createIdentifier(astNode);          
+            astNode.Id = AstVisitorUtility.CreateIdentifier(astNode);          
 
             if (DbContext.CsharpAstNodes.Find(astNode.Id) == null)
             {
@@ -888,7 +886,7 @@ namespace CSharpParser
                                 FullyParsed = false;
                             }
                             var info = Model.GetTypeInfo(node).ConvertedType;
-                            var declaratorNodeId = Helper.getAstNodeId(declaration.GetSyntax());
+                            var declaratorNodeId = AstVisitorUtility.GetAstNodeId(declaration.GetSyntax());
                             var astNode = AstNode(node, AstSymbolTypeEnum.EtcEntity, AstTypeEnum.Usage);
                             CsharpEtcEntity invoc = new CsharpEtcEntity
                             {
@@ -936,7 +934,7 @@ namespace CSharpParser
                         EtcEntityTypeEnum.ForeachExpr : EtcEntityTypeEnum.Invocation;
                     if (node.Parent.Parent.Kind() != SyntaxKind.InvocationExpression)
                     {
-                        var declaratorNodeId = Helper.getAstNodeId(declaration.GetSyntax());
+                        var declaratorNodeId = AstVisitorUtility.GetAstNodeId(declaration.GetSyntax());
                         var astNode = AstNode(node, AstSymbolTypeEnum.EtcEntity, AstTypeEnum.Usage);
                         CsharpEtcEntity expr = new CsharpEtcEntity
                         {

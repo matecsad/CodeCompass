@@ -17,16 +17,16 @@ using CodeCompass.Service.Language;
 using cc.service.csharp;
 using CSharpParser.model;
 
-class QueryHelper
+static class QueryUtility
     {
-    public AstNodeInfo createAstNodeInfo(CsharpAstNode node)
+    public static AstNodeInfo CreateAstNodeInfo(CsharpAstNode node)
     {
         AstNodeInfo ret = new AstNodeInfo();
         ret.Id = node.Id.ToString();
         ret.AstNodeValue = node.AstValue;
         ret.AstNodeType = node.RawKind.ToString();
         ret.SymbolType = node.AstSymbolType.ToString();
-        ret.Range = getFileRange(node);
+        ret.Range = GetFileRange(node);
 
         List<string> tags = new List<string>();
         tags.Add(node.Accessibility.ToString());
@@ -36,19 +36,19 @@ class QueryHelper
         return ret;
     }
 
-    public List<AstNodeInfo> createAstNodeInfoList(List<CsharpAstNode> nodeList)
+    public static List<AstNodeInfo> CreateAstNodeInfoList(List<CsharpAstNode> nodeList)
     {
         var ret = new List<AstNodeInfo>();
         foreach (var node in nodeList)
         {
-            var astNodeInfo = createAstNodeInfo(node);
+            var astNodeInfo = CreateAstNodeInfo(node);
             ret.Add(astNodeInfo);
         }
 
         return ret;
     }
 
-    public FileRange getFileRange(CsharpAstNode node)
+    public static FileRange GetFileRange(CsharpAstNode node)
     {
         FileRange fileRange = new FileRange();
         Position startPosition = new Position

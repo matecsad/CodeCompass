@@ -9,9 +9,9 @@ using Microsoft.CodeAnalysis;
 
 namespace CSharpParser
 {
-    class AstVisitorHelper
+    static class AstVisitorUtility
     {
-        public ulong createIdentifier(CsharpAstNode astNode){
+        public static ulong CreateIdentifier(CsharpAstNode astNode){
             string[] properties = 
             {
                 astNode.AstValue,":",
@@ -28,10 +28,10 @@ namespace CSharpParser
             string res = string.Concat(properties);
             
             //WriteLine(res);
-            return fnvHash(res);
+            return FnvHash(res);
         }
 
-        private ulong fnvHash(string data_)
+        private static ulong FnvHash(string data_)
         {
             ulong hash = 14695981039346656037;
 
@@ -45,7 +45,7 @@ namespace CSharpParser
             return hash;
         }     
 
-        public ulong getAstNodeId(SyntaxNode node){
+        public static ulong GetAstNodeId(SyntaxNode node){
             CsharpAstNode astNode = new CsharpAstNode
             {
                 AstValue = node.ToString(),
@@ -54,7 +54,7 @@ namespace CSharpParser
                 AstType = AstTypeEnum.Declaration
             };
             astNode.SetLocation(node.SyntaxTree.GetLineSpan(node.Span));
-            var ret = createIdentifier(astNode);
+            var ret = CreateIdentifier(astNode);
             return ret;
         }
     }
