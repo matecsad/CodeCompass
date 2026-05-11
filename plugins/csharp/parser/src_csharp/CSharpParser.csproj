@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../migrations/pgsqlMigrations/PgsqlMigrations.csproj" />
-    <ProjectReference Include="../../migrations/sqliteMigrations/SqliteMigrations.csproj" />
-    <ProjectReference Include="../../db_model/DbModel.csproj" />
+    <ProjectReference Include="../../Migrations/PgsqlMigrations/PgsqlMigrations.csproj" />
+    <ProjectReference Include="../../Migrations/SqliteMigrations/SqliteMigrations.csproj" />
+    <ProjectReference Include="../../DbModel/DbModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +21,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.20" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.20">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

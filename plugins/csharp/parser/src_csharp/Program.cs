@@ -9,13 +9,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DbModel;
-// using CSharpParser.model;
 
 namespace CSharpParser
 {
   class Program
   {
-    //private readonly CsharpDbContext _context;
     private static List<string> _rootDir;
     private static string _buildDir = "";
     private static string _buildDirBase = "";
@@ -44,48 +42,15 @@ namespace CSharpParser
         WriteLine("Error in parsing command!");
         return 1;
       }
-      /*if (args.Length < 3)
-      {
-          WriteLine("Missing command-line arguments in CSharpParser!");                              
-          return 1;
-      }
-      else if (args.Length == 3)
-      {
-          _connectionString = args[0].Replace("'", "");
-          _rootDir = args[1].Replace("'", "");
-          _buildDir = args[2].Replace("'", "");
-      }
-      else if (args.Length == 4)
-      {
-          _connectionString = args[0].Replace("'", "");
-          _rootDir = args[1].Replace("'", "");
-          _buildDir = args[2].Replace("'", "");
-          bool success = int.TryParse(args[3], out threadNum);
-          if (!success){
-              WriteLine("Invalid threadnumber argument! Multithreaded parsing disabled!");                    
-          }
-      }
-      else if (args.Length == 5)
-      {
-          _connectionString = args[0].Replace("'", "");
-          _rootDir = args[1].Replace("'", "");
-          _buildDir = args[2].Replace("'", "");
-          _buildDirBase = args[3].Replace("'", "");
-          bool success = int.TryParse(args[4], out threadNum);
-          if (!success)
-          {
-              WriteLine("Invalid threadnumber argument! Multithreaded parsing disabled!");                    
-          }            
-      }
-      else if (args.Length > 5)
-      {
-          WriteLine("Too many command-line arguments in CSharpParser!");
-          return 1;
-      }*/
 
       _dbSystem = _connectionString.Substring(0, _connectionString.IndexOf(':')).ToLower();
       //Converting the connectionstring into entiy framwork style connectionstring
-      string csharpConnectionString = transformConnectionString();
+      string csharpConnectionString = TransformConnectionString();
+      if (csharpConnectionString == null)
+      {
+        WriteLine("Error: invalid database system in connection string!");
+        return 1;
+      }
 
       CsharpDbContext context = new CsharpDbContext(_dbSystem, csharpConnectionString);
       context.Database.Migrate();
@@ -265,7 +230,7 @@ namespace CSharpParser
       return allFiles;
     }
 
-    private static string transformConnectionString()
+    private static string TransformConnectionString()
     {
       string csharpConnectionString = "";
       if (_dbSystem == "pgsql")
@@ -284,11 +249,15 @@ namespace CSharpParser
           }
         }
       }
-      else
+      else if(_dbSystem == "sqlite")
       {
         // "sqlite:database=" needs to be removed from the connection string.
         _connectionString = _connectionString.Substring(_connectionString.IndexOf(':') + 10);
         csharpConnectionString = "Data Source=" + _connectionString;
+      }
+      else
+      {
+        csharpConnectionString = null;
       }
 
       return csharpConnectionString;

@@ -32,11 +32,11 @@ namespace DbModel
         {
             case "pgsql":
                 optionsBuilder.UseNpgsql(_connectionString,
-                x => x.MigrationsAssembly("pgsqlMigrations"));
+                x => x.MigrationsAssembly("PgsqlMigrations"));
                 break;
             case "sqlite":
                 optionsBuilder.UseSqlite(_connectionString,
-                x => x.MigrationsAssembly("sqliteMigrations"));
+                x => x.MigrationsAssembly("SqliteMigrations"));
                 break;
             default:
                 break;
